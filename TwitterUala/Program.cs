@@ -28,7 +28,10 @@ builder.Services.AddScoped<IFollowingRepository, FollowingRepository>();
 builder.Services.AddScoped<ITweetRepository, TweetRepository>();
 
 var app = builder.Build();
-
+using (var sp = app.Services.CreateScope())
+{
+    sp.ServiceProvider.GetRequiredService<TwitterDbContext>().Database.Migrate();
+}
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

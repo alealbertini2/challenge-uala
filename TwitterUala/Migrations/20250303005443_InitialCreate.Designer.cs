@@ -12,8 +12,8 @@ using TwitterUala.Infrastructure;
 namespace TwitterUala.Migrations
 {
     [DbContext(typeof(TwitterDbContext))]
-    [Migration("20250302145227_TwitterUala")]
-    partial class TwitterUala
+    [Migration("20250303005443_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -64,8 +64,8 @@ namespace TwitterUala.Migrations
                         .HasColumnType("text")
                         .HasColumnName("tweet_message");
 
-                    b.Property<DateTime?>("TweetPosted")
-                        .HasColumnType("timestamp without time zone")
+                    b.Property<DateTime>("TweetPosted")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("tweet_posted");
 
                     b.Property<long>("UserId")

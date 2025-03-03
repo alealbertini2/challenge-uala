@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace TwitterUala.Migrations
 {
     /// <inheritdoc />
-    public partial class TwitterUala : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -34,7 +34,7 @@ namespace TwitterUala.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     user_id = table.Column<long>(type: "bigint", nullable: false),
                     tweet_message = table.Column<string>(type: "text", nullable: false),
-                    tweet_posted = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    tweet_posted = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     FollowingIdFollowing = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>

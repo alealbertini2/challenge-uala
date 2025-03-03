@@ -13,7 +13,7 @@ namespace TwitterUala.Application.UseCases
             Tweet tweet = new Tweet();
             tweet.UserId = userId;
             tweet.TweetMessage = tweetMessage;
-            tweet.TweetPosted = new DateTime();
+            tweet.TweetPosted = DateTime.UtcNow;
             _tweetRepository.PublishTweet(tweet);
         }
     }

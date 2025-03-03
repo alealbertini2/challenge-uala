@@ -14,10 +14,8 @@ namespace TwitterUala.Application.UseCases
 
             // si hay tweets, los devuelvo
 
-            var tweets = _followingRepository.TweetsFromFollowingByUserId(userId);
-            List<Tweet> tweetsByFollowingUsers = new List<Tweet>();
-            tweets.ToList().ForEach(t => tweetsByFollowingUsers.AddRange(t.TweetsUser));
-            return tweetsByFollowingUsers;
+            var tweets = _followingRepository.TweetsFromFollowingByUserId(userId).ToList();
+            return tweets;
         }
     }
 }

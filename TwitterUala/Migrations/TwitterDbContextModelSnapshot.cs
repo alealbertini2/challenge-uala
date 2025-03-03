@@ -61,8 +61,8 @@ namespace TwitterUala.Migrations
                         .HasColumnType("text")
                         .HasColumnName("tweet_message");
 
-                    b.Property<DateTime?>("TweetPosted")
-                        .HasColumnType("timestamp without time zone")
+                    b.Property<DateTime>("TweetPosted")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("tweet_posted");
 
                     b.Property<long>("UserId")

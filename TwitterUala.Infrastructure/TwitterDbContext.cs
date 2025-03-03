@@ -6,16 +6,16 @@ namespace TwitterUala.Infrastructure
 {
     public class TwitterDbContext : DbContext
     {
-/*        private readonly IConfiguration _configuration;
-        public TwitterDbContext(IConfiguration configuration)
-        {
-            _configuration = configuration;
-        }*/
+        /*        private readonly IConfiguration _configuration;
+                public TwitterDbContext(IConfiguration configuration)
+                {
+                    _configuration = configuration;
+                }*/
 
         public TwitterDbContext(DbContextOptions<TwitterDbContext> options/*, IConfiguration configuration*/)
         : base(options)
         {
-           // _configuration = configuration;
+            // _configuration = configuration;
         }
 
         public virtual DbSet<Following> Following { get; set; }
@@ -37,8 +37,10 @@ namespace TwitterUala.Infrastructure
         {
             var tables = new List<Type> { typeof(Tweet), typeof(Following) };
 
-            foreach (var table in tables) {
-                foreach (var column in table.GetProperties()) {
+            foreach (var table in tables)
+            {
+                foreach (var column in table.GetProperties())
+                {
                     modelBuilder.Entity(table).Property(column.Name).HasColumnName(ToUnderscoreLowerCase(column.Name));
                 }
                 modelBuilder.Entity(table).ToTable(ToUnderscoreLowerCase(table.Name));
@@ -57,7 +59,7 @@ namespace TwitterUala.Infrastructure
                 .HasMany(f => f.TweetsUser)
                 .WithOne(t => t.Following)
                 .HasForeignKey(t => t.UserId);
-                    //.HasColumnName("id");
+                //.HasColumnName("id");
                 //entity.Property(e => e.UserId).HasColumnName("user_id");
                 //entity.Property(e => e.UsersToFollowId).HasColumnName("users_to_follow_id");
             });
@@ -73,10 +75,10 @@ namespace TwitterUala.Infrastructure
                 //.HasColumnName("id");
                 //entity.Property(e => e.UserId).HasColumnName("user_id");
                 //entity.Property(e => e.TweetMessage).HasColumnName("tweet_message");
-                entity.Property(e => e.TweetPosted)
-                    .HasColumnType("timestamp without time zone");
+               // entity.Property(e => e.TweetPosted)
+                    //.HasColumnType("timestamp without time zone");
                 entity.Ignore(t => t.Following);
-                    //.HasColumnName("tweet_posted");
+                //.HasColumnName("tweet_posted");
             });
         }
     }
