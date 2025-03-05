@@ -3,6 +3,7 @@ using TwitterUala.Application.Contracts.Applicaction;
 using TwitterUala.Application.Contracts.Infrastructure;
 using TwitterUala.Application.UseCases;
 using TwitterUala.Infrastructure;
+using TwitterUala.Infrastructure.Impl;
 using TwitterUala.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,11 +22,15 @@ builder.Services.AddDbContext<TwitterDbContext>(options => options.UseNpgsql(bui
         b.MigrationsAssembly(nameof(TwitterUala));
     }));
 
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
+builder.Services.AddScoped<DbContext, TwitterDbContext>();
+
 builder.Services.AddScoped<IFollowUserService, FollowUserService>();
 builder.Services.AddScoped<IPublishTweetService, PublishTweetService>();
 builder.Services.AddScoped<ITweetsFromFollowingByUserService, TweetsFromFollowingByUserService>();
 builder.Services.AddScoped<IFollowingRepository, FollowingRepository>();
-builder.Services.AddScoped<ITweetRepository, TweetRepository>();
+
 
 var app = builder.Build();
 using (var sp = app.Services.CreateScope())

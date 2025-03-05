@@ -4,9 +4,9 @@ using TwitterUala.Domain.Entities;
 
 namespace TwitterUala.Application.UseCases
 {
-    public class PublishTweetService(ITweetRepository tweetRepository) : IPublishTweetService
+    public class PublishTweetService(IUnitOfWork unitOfWork) : IPublishTweetService
     {
-        private readonly ITweetRepository _tweetRepository = tweetRepository;
+        private readonly IUnitOfWork _unitOfWork = unitOfWork; 
 
         public void PublishTweet(long userId, string tweetMessage)
         {
@@ -14,7 +14,9 @@ namespace TwitterUala.Application.UseCases
             tweet.UserId = userId;
             tweet.TweetMessage = tweetMessage;
             tweet.TweetPosted = DateTime.UtcNow;
-            _tweetRepository.PublishTweet(tweet);
+
+            _unitOfWork.GetRepository<Tweet>().Add(tweet);
+            _unitOfWork.SaveChangesAsync();
         }
     }
 }

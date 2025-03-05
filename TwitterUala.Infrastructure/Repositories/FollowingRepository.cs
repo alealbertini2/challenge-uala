@@ -8,12 +8,6 @@ namespace TwitterUala.Infrastructure.Repositories
     {
         private readonly TwitterDbContext _dbContext = dbContext;
 
-        public void FollowUser(Following follow)
-        {
-            _dbContext.Following.Add(follow);
-            _dbContext.SaveChanges();
-        }
-
         public IEnumerable<Tweet> TweetsFromFollowingByUserId(long userId)
         {
             //var tweetsByUser = _dbContext.Following.Include(f => f.TweetsUser).Where(f => f.UserId == userId);

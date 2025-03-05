@@ -2,6 +2,6 @@
 {
     public interface IFollowUserService
     {
-        void FollowUser(long userId, long userToFollowId);
+        Task FollowUser(long userId, long userToFollowId);
     }
 }

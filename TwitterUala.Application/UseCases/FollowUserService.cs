@@ -4,16 +4,25 @@ using TwitterUala.Domain.Entities;
 
 namespace TwitterUala.Application.UseCases
 {
-    public class FollowUserService(IFollowingRepository followingRepository) : IFollowUserService
+    public class FollowUserService(IUnitOfWork unitOfWork) : IFollowUserService
     {
-        private readonly IFollowingRepository _followingRepository = followingRepository;
+        private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
-        public void FollowUser(long userId, long userToFollowId)
+        public async Task FollowUser(long userId, long userToFollowId)
         {
-            Following following = new Following();
-            following.UserId = userId;
-            following.UsersToFollowId = userToFollowId;
-            _followingRepository.FollowUser(following);
+            try
+            {
+                Following following = new Following();
+                following.UserId = userId;
+                following.UsersToFollowId = userToFollowId;
+
+                _unitOfWork.GetRepository<Following>().Add(following);
+                _unitOfWork.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error al seguir al usuario: {ex.Message}", ex);
+            }
         }
     }
 }
