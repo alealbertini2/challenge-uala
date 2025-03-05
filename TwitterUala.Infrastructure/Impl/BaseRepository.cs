@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 using TwitterUala.Application.Contracts.Infrastructure;
 
 namespace TwitterUala.Infrastructure.Impl
@@ -13,5 +14,9 @@ namespace TwitterUala.Infrastructure.Impl
         }
 
         public virtual async Task Add(T entity) => await _entity.AddAsync(entity);
+
+        public virtual async Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> filter, bool tracking = true)
+        => tracking ? await _entity.FirstOrDefaultAsync(filter) : await _entity.AsNoTracking().FirstOrDefaultAsync(filter);
+
     }
 }

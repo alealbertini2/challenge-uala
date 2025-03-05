@@ -27,6 +27,19 @@ namespace TwitterUala.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "user",
+                columns: table => new
+                {
+                    id_user = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    username = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_user", x => x.id_user);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "tweet",
                 columns: table => new
                 {
@@ -58,6 +71,9 @@ namespace TwitterUala.Migrations
         {
             migrationBuilder.DropTable(
                 name: "tweet");
+
+            migrationBuilder.DropTable(
+                name: "user");
 
             migrationBuilder.DropTable(
                 name: "following");

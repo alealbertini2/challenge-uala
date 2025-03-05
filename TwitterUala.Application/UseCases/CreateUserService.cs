@@ -10,6 +10,22 @@ namespace TwitterUala.Application.UseCases
 
         public void CreateUser(string username)
         {
+            if (username.Length <= 0)
+            {
+                throw new Exception("El nombre del usuario no puede ser vacío");
+            }
+
+            if (username.Length > 50)
+            {
+                throw new Exception("El nombre del usuario no puede ser mayor a 50 caracteres");
+            }
+
+            var existUsername = _unitOfWork.GetRepository<User>().FirstOrDefaultAsync(x => x.Username == username) != null;
+            if (existUsername)
+            {
+                throw new Exception("Ya existe un usuario con el mismo nombre de usuario");
+            }
+
             User user = new User();
             user.Username = username;
 

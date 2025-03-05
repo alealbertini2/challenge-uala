@@ -76,6 +76,25 @@ namespace TwitterUala.Migrations
                     b.ToTable("tweet", (string)null);
                 });
 
+            modelBuilder.Entity("TwitterUala.Domain.Entities.User", b =>
+                {
+                    b.Property<long>("IdUser")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id_user");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("IdUser"));
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("username");
+
+                    b.HasKey("IdUser");
+
+                    b.ToTable("user", (string)null);
+                });
+
             modelBuilder.Entity("TwitterUala.Domain.Entities.Tweet", b =>
                 {
                     b.HasOne("TwitterUala.Domain.Entities.Following", null)

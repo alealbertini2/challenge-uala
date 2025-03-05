@@ -12,7 +12,7 @@ using TwitterUala.Infrastructure;
 namespace TwitterUala.Migrations
 {
     [DbContext(typeof(TwitterDbContext))]
-    [Migration("20250303005443_InitialCreate")]
+    [Migration("20250305012752_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -77,6 +77,25 @@ namespace TwitterUala.Migrations
                     b.HasIndex("FollowingIdFollowing");
 
                     b.ToTable("tweet", (string)null);
+                });
+
+            modelBuilder.Entity("TwitterUala.Domain.Entities.User", b =>
+                {
+                    b.Property<long>("IdUser")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id_user");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("IdUser"));
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("username");
+
+                    b.HasKey("IdUser");
+
+                    b.ToTable("user", (string)null);
                 });
 
             modelBuilder.Entity("TwitterUala.Domain.Entities.Tweet", b =>

@@ -54,6 +54,8 @@ namespace TwitterUala.Infrastructure
                 entity.Property(e => e.IdTweet)
                     .ValueGeneratedOnAdd();
                 entity.Ignore(t => t.Following);
+                entity.Property(e => e.TweetMessage)
+                    .HasMaxLength(280);
             });
 
             modelBuilder.Entity<User>(entity =>
@@ -62,6 +64,9 @@ namespace TwitterUala.Infrastructure
 
                 entity.Property(e => e.IdUser)
                     .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.Username)
+                    .HasMaxLength(50);
             });
         }
     }
