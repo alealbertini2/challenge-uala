@@ -13,7 +13,14 @@ namespace TwitterUala.Controllers
         [HttpPost(Name = "FollowUser")]
         public void FollowUser(long userId, long userToFollowId)
         {
-            _followUserService.FollowUser(userId, userToFollowId);
+            try
+            {
+                _followUserService.FollowUser(userId, userToFollowId);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error al seguir al usuario: {ex.Message}", ex);
+            }
         }
     }
 }

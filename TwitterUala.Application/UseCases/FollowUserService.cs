@@ -10,19 +10,12 @@ namespace TwitterUala.Application.UseCases
 
         public async Task FollowUser(long userId, long userToFollowId)
         {
-            try
-            {
-                Following following = new Following();
-                following.UserId = userId;
-                following.UsersToFollowId = userToFollowId;
+            Following following = new Following();
+            following.UserId = userId;
+            following.UsersToFollowId = userToFollowId;
 
-                _unitOfWork.GetRepository<Following>().Add(following);
-                _unitOfWork.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Error al seguir al usuario: {ex.Message}", ex);
-            }
+            _unitOfWork.GetRepository<Following>().Add(following);
+            _unitOfWork.SaveChangesAsync();
         }
     }
 }

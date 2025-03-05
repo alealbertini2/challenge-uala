@@ -15,7 +15,6 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-//builder.Services.AddDbContext<TwitterDbContext>();
 builder.Services.AddDbContext<TwitterDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("Default"), 
     b =>
     {

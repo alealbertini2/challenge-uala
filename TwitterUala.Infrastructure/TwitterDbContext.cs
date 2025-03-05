@@ -1,32 +1,19 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using TwitterUala.Domain.Entities;
 
 namespace TwitterUala.Infrastructure
 {
     public class TwitterDbContext : DbContext
     {
-        /*        private readonly IConfiguration _configuration;
-                public TwitterDbContext(IConfiguration configuration)
-                {
-                    _configuration = configuration;
-                }*/
-
-        public TwitterDbContext(DbContextOptions<TwitterDbContext> options/*, IConfiguration configuration*/)
+        public TwitterDbContext(DbContextOptions<TwitterDbContext> options)
         : base(options)
         {
-            // _configuration = configuration;
         }
 
         public virtual DbSet<Following> Following { get; set; }
-
         public virtual DbSet<Tweet> Tweet { get; set; }
+        public virtual DbSet<Tweet> User { get; set; }
 
-        /*        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-                {
-                    string connString = $"Host=localhost;Port=5432;User ID=postgres;Password=uala123;Database=twitter_uala;";
-                    optionsBuilder.UseNpgsql(connString);
-                }*/
 
         public string ToUnderscoreLowerCase(string str)
         {
@@ -35,7 +22,7 @@ namespace TwitterUala.Infrastructure
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            var tables = new List<Type> { typeof(Tweet), typeof(Following) };
+            var tables = new List<Type> { typeof(Tweet), typeof(Following), typeof(User) };
 
             foreach (var table in tables)
             {
@@ -50,35 +37,31 @@ namespace TwitterUala.Infrastructure
 
             modelBuilder.Entity<Following>(entity =>
             {
-                entity.HasKey(e => e.IdFollowing)/*.HasName("ID_pkey")*/;
+                entity.HasKey(e => e.IdFollowing);
 
-                //entity.ToTable("following");
                 entity.Property(e => e.IdFollowing)
                     .ValueGeneratedOnAdd();
                 entity.Ignore(f => f.TweetsUser)
                 .HasMany(f => f.TweetsUser)
                 .WithOne(t => t.Following)
                 .HasForeignKey(t => t.UserId);
-                //.HasColumnName("id");
-                //entity.Property(e => e.UserId).HasColumnName("user_id");
-                //entity.Property(e => e.UsersToFollowId).HasColumnName("users_to_follow_id");
             });
 
             modelBuilder.Entity<Tweet>(entity =>
             {
-                entity.HasKey(e => e.IdTweet)/*.HasName("TWEET_pkey")*/;
-
-                //entity.ToTable("tweet");
+                entity.HasKey(e => e.IdTweet);
 
                 entity.Property(e => e.IdTweet)
                     .ValueGeneratedOnAdd();
-                //.HasColumnName("id");
-                //entity.Property(e => e.UserId).HasColumnName("user_id");
-                //entity.Property(e => e.TweetMessage).HasColumnName("tweet_message");
-               // entity.Property(e => e.TweetPosted)
-                    //.HasColumnType("timestamp without time zone");
                 entity.Ignore(t => t.Following);
-                //.HasColumnName("tweet_posted");
+            });
+
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.HasKey(e => e.IdUser);
+
+                entity.Property(e => e.IdUser)
+                    .ValueGeneratedOnAdd();
             });
         }
     }
