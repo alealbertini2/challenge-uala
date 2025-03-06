@@ -14,7 +14,7 @@ namespace TwitterUala.Controllers
         {
             try
             {
-                _createUserService.CreateUser(username);
+                _createUserService.CreateUserAsync(username).GetAwaiter().GetResult();
             }
             catch (Exception ex)
             {

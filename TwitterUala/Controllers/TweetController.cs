@@ -19,7 +19,7 @@ namespace TwitterUala.Controllers
         {
             try
             {
-                _publishTweetService.PublishTweet(userId, tweetMessage);
+                _publishTweetService.PublishTweetAsync(userId, tweetMessage).GetAwaiter().GetResult();
             }
             catch (Exception ex)
             {
@@ -32,7 +32,7 @@ namespace TwitterUala.Controllers
         {
             try
             {
-                return _tweetsFromFollowingByUserService.TweetsFromFollowingByUser(userId);
+                return _tweetsFromFollowingByUserService.TweetsFromFollowingByUserAsync(userId).GetAwaiter().GetResult();
             }
             catch (Exception ex)
             {

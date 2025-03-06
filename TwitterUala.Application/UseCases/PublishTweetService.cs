@@ -8,31 +8,38 @@ namespace TwitterUala.Application.UseCases
     {
         private readonly IUnitOfWork _unitOfWork = unitOfWork; 
 
-        public void PublishTweet(long userId, string tweetMessage)
+        public async Task PublishTweetAsync(long userId, string tweetMessage)
         {
-            var validUser = _unitOfWork.GetRepository<User>().FirstOrDefaultAsync(u => u.IdUser == userId);
-            if (validUser == null)
+            try
             {
-                throw new Exception("El usuario actual no es válido");
+                var validUser = await _unitOfWork.GetRepository<User>().FirstOrDefaultAsync(u => u.IdUser == userId);
+                if (validUser == null)
+                {
+                    throw new Exception("El usuario actual no es válido");
+                }
+
+                if (tweetMessage.Length <= 0)
+                {
+                    throw new Exception("El mensaje no puede ser vacío");
+                }
+
+                if (tweetMessage.Length > 280)
+                {
+                    throw new Exception("El mensaje no puede ser mayor a 280 caracteres");
+                }
+
+                Tweet tweet = new Tweet();
+                tweet.UserId = userId;
+                tweet.TweetMessage = tweetMessage;
+                tweet.TweetPosted = DateTime.UtcNow;
+
+                _unitOfWork.GetRepository<Tweet>().Add(tweet);
+                _unitOfWork.SaveChangesAsync();
             }
-
-            if (tweetMessage.Length <= 0)
-            {
-                throw new Exception("El mensaje no puede ser vacío");
+            catch (Exception ex) 
+            { 
+                throw new Exception(ex.Message);
             }
-
-            if (tweetMessage.Length > 280)
-            {
-                throw new Exception("El mensaje no puede ser mayor a 280 caracteres");
-            }
-
-            Tweet tweet = new Tweet();
-            tweet.UserId = userId;
-            tweet.TweetMessage = tweetMessage;
-            tweet.TweetPosted = DateTime.UtcNow;
-
-            _unitOfWork.GetRepository<Tweet>().Add(tweet);
-            _unitOfWork.SaveChangesAsync();
         }
     }
 }

@@ -12,7 +12,7 @@ using TwitterUala.Infrastructure;
 namespace TwitterUala.Migrations
 {
     [DbContext(typeof(TwitterDbContext))]
-    [Migration("20250305012752_InitialCreate")]
+    [Migration("20250306051752_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -27,13 +27,6 @@ namespace TwitterUala.Migrations
 
             modelBuilder.Entity("TwitterUala.Domain.Entities.Following", b =>
                 {
-                    b.Property<long>("IdFollowing")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasColumnName("id_following");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("IdFollowing"));
-
                     b.Property<long>("UserId")
                         .HasColumnType("bigint")
                         .HasColumnName("user_id");
@@ -42,7 +35,11 @@ namespace TwitterUala.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("users_to_follow_id");
 
-                    b.HasKey("IdFollowing");
+                    b.HasKey("UserId", "UsersToFollowId");
+
+                    b.HasIndex(new[] { "UserId", "UsersToFollowId" }, "IX_Following_UserId_UsersToFollowId");
+
+                    b.HasIndex(new[] { "UsersToFollowId" }, "IX_Following_UsersToFollowId");
 
                     b.ToTable("following", (string)null);
                 });
@@ -56,12 +53,16 @@ namespace TwitterUala.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("IdTweet"));
 
-                    b.Property<long?>("FollowingIdFollowing")
+                    b.Property<long?>("FollowingUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("FollowingUsersToFollowId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("TweetMessage")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasMaxLength(280)
+                        .HasColumnType("character varying(280)")
                         .HasColumnName("tweet_message");
 
                     b.Property<DateTime>("TweetPosted")
@@ -74,7 +75,9 @@ namespace TwitterUala.Migrations
 
                     b.HasKey("IdTweet");
 
-                    b.HasIndex("FollowingIdFollowing");
+                    b.HasIndex("FollowingUserId", "FollowingUsersToFollowId");
+
+                    b.HasIndex(new[] { "UserId" }, "IX_Tweet_UserId");
 
                     b.ToTable("tweet", (string)null);
                 });
@@ -90,10 +93,13 @@ namespace TwitterUala.Migrations
 
                     b.Property<string>("Username")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
                         .HasColumnName("username");
 
                     b.HasKey("IdUser");
+
+                    b.HasIndex(new[] { "IdUser" }, "IX_User_IdUser");
 
                     b.ToTable("user", (string)null);
                 });
@@ -102,7 +108,7 @@ namespace TwitterUala.Migrations
                 {
                     b.HasOne("TwitterUala.Domain.Entities.Following", null)
                         .WithMany("TweetsUser")
-                        .HasForeignKey("FollowingIdFollowing");
+                        .HasForeignKey("FollowingUserId", "FollowingUsersToFollowId");
                 });
 
             modelBuilder.Entity("TwitterUala.Domain.Entities.Following", b =>

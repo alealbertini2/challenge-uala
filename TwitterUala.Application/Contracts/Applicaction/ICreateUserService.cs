@@ -2,6 +2,6 @@
 {
     public interface ICreateUserService
     {
-        public void CreateUser(string username);
+        public Task CreateUserAsync(string username);
     }
 }

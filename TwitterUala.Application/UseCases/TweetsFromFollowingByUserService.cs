@@ -9,20 +9,23 @@ namespace TwitterUala.Application.UseCases
         private readonly IFollowingRepository _followingRepository = followingRepository;
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
-        public List<Tweet> TweetsFromFollowingByUser(long userId)
+        public async Task<List<Tweet>> TweetsFromFollowingByUserAsync(long userId)
         {
-            var validUser = _unitOfWork.GetRepository<User>().FirstOrDefaultAsync(u => u.IdUser == userId);
-            if (validUser == null)
+            try
             {
-                throw new Exception("El usuario actual no es válido");
+                var validUser = await _unitOfWork.GetRepository<User>().FirstOrDefaultAsync(u => u.IdUser == userId);
+                if (validUser == null)
+                {
+                    throw new Exception("El usuario actual no es válido");
+                }
+
+                var tweets = _followingRepository.TweetsFromFollowingByUserId(userId).ToList();
+                return tweets;
             }
-
-            // buscar en cache si estan los tweets del usuario
-
-            // si hay tweets, los devuelvo
-
-            var tweets = _followingRepository.TweetsFromFollowingByUserId(userId).ToList();
-            return tweets;
+            catch (Exception ex) 
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }

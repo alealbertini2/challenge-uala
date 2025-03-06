@@ -15,7 +15,7 @@ namespace TwitterUala.Controllers
         {
             try
             {
-                _followUserService.FollowUser(userId, userToFollowId);
+                _followUserService.FollowUser(userId, userToFollowId).GetAwaiter().GetResult();
             }
             catch (Exception ex)
             {

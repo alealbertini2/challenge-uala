@@ -4,6 +4,6 @@ namespace TwitterUala.Application.Contracts.Applicaction
 {
     public interface ITweetsFromFollowingByUserService
     {
-        List<Tweet> TweetsFromFollowingByUser(long userId);
+        Task<List<Tweet>> TweetsFromFollowingByUserAsync(long userId);
     }
 }

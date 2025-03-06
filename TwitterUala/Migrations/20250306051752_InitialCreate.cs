@@ -16,14 +16,12 @@ namespace TwitterUala.Migrations
                 name: "following",
                 columns: table => new
                 {
-                    id_following = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     user_id = table.Column<long>(type: "bigint", nullable: false),
                     users_to_follow_id = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_following", x => x.id_following);
+                    table.PrimaryKey("PK_following", x => new { x.user_id, x.users_to_follow_id });
                 });
 
             migrationBuilder.CreateTable(
@@ -32,7 +30,7 @@ namespace TwitterUala.Migrations
                 {
                     id_user = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    username = table.Column<string>(type: "text", nullable: false)
+                    username = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -46,24 +44,45 @@ namespace TwitterUala.Migrations
                     id_tweet = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     user_id = table.Column<long>(type: "bigint", nullable: false),
-                    tweet_message = table.Column<string>(type: "text", nullable: false),
+                    tweet_message = table.Column<string>(type: "character varying(280)", maxLength: 280, nullable: false),
                     tweet_posted = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    FollowingIdFollowing = table.Column<long>(type: "bigint", nullable: true)
+                    FollowingUserId = table.Column<long>(type: "bigint", nullable: true),
+                    FollowingUsersToFollowId = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_tweet", x => x.id_tweet);
                     table.ForeignKey(
-                        name: "FK_tweet_following_FollowingIdFollowing",
-                        column: x => x.FollowingIdFollowing,
+                        name: "FK_tweet_following_FollowingUserId_FollowingUsersToFollowId",
+                        columns: x => new { x.FollowingUserId, x.FollowingUsersToFollowId },
                         principalTable: "following",
-                        principalColumn: "id_following");
+                        principalColumns: new[] { "user_id", "users_to_follow_id" });
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_tweet_FollowingIdFollowing",
+                name: "IX_Following_UserId_UsersToFollowId",
+                table: "following",
+                columns: new[] { "user_id", "users_to_follow_id" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Following_UsersToFollowId",
+                table: "following",
+                column: "users_to_follow_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_tweet_FollowingUserId_FollowingUsersToFollowId",
                 table: "tweet",
-                column: "FollowingIdFollowing");
+                columns: new[] { "FollowingUserId", "FollowingUsersToFollowId" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tweet_UserId",
+                table: "tweet",
+                column: "user_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_User_IdUser",
+                table: "user",
+                column: "id_user");
         }
 
         /// <inheritdoc />

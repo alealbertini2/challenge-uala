@@ -2,6 +2,6 @@
 {
     public interface IPublishTweetService
     {
-        void PublishTweet(long userId, string tweetMessage);
+        Task PublishTweetAsync(long userId, string tweetMessage);
     }
 }

@@ -10,24 +10,31 @@ namespace TwitterUala.Application.UseCases
 
         public async Task FollowUser(long userId, long userToFollowId)
         {
-            var validUser = _unitOfWork.GetRepository<User>().FirstOrDefaultAsync(u => u.IdUser == userId);
-            if (validUser == null) 
+            try
             {
-                throw new Exception("El usuario actual no es válido");
-            }
+                var validUser = await _unitOfWork.GetRepository<User>().FirstOrDefaultAsync(u => u.IdUser == userId);
+                if (validUser == null)
+                {
+                    throw new Exception("El usuario actual no es válido");
+                }
 
-            var validUserToFollow = _unitOfWork.GetRepository<User>().FirstOrDefaultAsync(u => u.IdUser == userToFollowId);
-            if (validUserToFollow == null)
+                var validUserToFollow = await _unitOfWork.GetRepository<User>().FirstOrDefaultAsync(u => u.IdUser == userToFollowId);
+                if (validUserToFollow == null)
+                {
+                    throw new Exception("El usuario a seguir no es válido");
+                }
+
+                Following following = new Following();
+                following.UserId = userId;
+                following.UsersToFollowId = userToFollowId;
+
+                _unitOfWork.GetRepository<Following>().Add(following);
+                _unitOfWork.SaveChangesAsync();
+            }
+            catch (Exception ex)
             {
-                throw new Exception("El usuario a seguir no es válido");
+                throw new Exception(ex.Message);
             }
-
-            Following following = new Following();
-            following.UserId = userId;
-            following.UsersToFollowId = userToFollowId;
-
-            _unitOfWork.GetRepository<Following>().Add(following);
-            _unitOfWork.SaveChangesAsync();
         }
     }
 }
