@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using TwitterUala.Application.Contracts.Applicaction;
 using TwitterUala.Application.Contracts.Infrastructure;
 using TwitterUala.Application.UseCases;
@@ -38,6 +39,7 @@ using (var sp = app.Services.CreateScope())
 {
     sp.ServiceProvider.GetRequiredService<TwitterDbContext>().Database.Migrate();
 }
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
