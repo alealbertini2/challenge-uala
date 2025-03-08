@@ -11,10 +11,10 @@ namespace TwitterUala.Controllers
         private readonly IFollowUserService _followUserService = followUserService;
 
         [HttpPost(Name = "FollowUser")]
-        public void FollowUser(long userId, long userToFollowId)
+        public async Task FollowUserAsync(long userId, long userToFollowId)
         {
             _logger.LogInformation("Usuario a insertar: Usuario: {0} Usuario a seguir: {1}", userId, userToFollowId);
-            _followUserService.FollowUserAsync(userId, userToFollowId);
+            await _followUserService.FollowUserAsync(userId, userToFollowId);
         }
     }
 }

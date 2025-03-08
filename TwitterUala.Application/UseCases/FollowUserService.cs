@@ -25,12 +25,17 @@ namespace TwitterUala.Application.UseCases
                 throw new InvalidDataException("El usuario a seguir no es válido");
             }
 
+            if (userId == userToFollowId)
+            {
+                throw new InvalidDataException("El usuario actual no puede seguirse a si mismo");
+            }
+
             Following following = new Following();
             following.UserId = userId;
             following.UsersToFollowId = userToFollowId;
 
-            _unitOfWork.GetRepository<Following>().Add(following);
-            _unitOfWork.SaveChangesAsync();
+            await _unitOfWork.GetRepository<Following>().Add(following);
+            await _unitOfWork.SaveChangesAsync();
             _logger.LogInformation("Usuario seguido: {0}", JsonConvert.SerializeObject(following));
         }
     }

@@ -27,7 +27,7 @@ builder.Services.AddScoped<DbContext, TwitterDbContext>();
 
 builder.Services.AddScoped<IFollowUserService, FollowUserService>();
 builder.Services.AddScoped<IPublishTweetService, PublishTweetService>();
-builder.Services.AddScoped<ITweetsFromFollowingByUserService, TweetsFromFollowingByUserService>();
+builder.Services.AddScoped<ITweetsFromFollowingByUserService, TimelineService>();
 builder.Services.AddScoped<ICreateUserService, CreateUserService>();
 builder.Services.AddScoped<IFollowingRepository, FollowingRepository>();
 

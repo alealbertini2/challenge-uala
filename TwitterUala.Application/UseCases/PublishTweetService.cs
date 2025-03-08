@@ -16,7 +16,7 @@ namespace TwitterUala.Application.UseCases
             var validUser = await _unitOfWork.GetRepository<User>().FirstOrDefaultAsync(u => u.IdUser == userId);
             if (validUser == null)
             {
-                throw new InvalidDataException("El usuario actual no es válido");
+                throw new InvalidDataException("El usuario actual no es valido");
             }
 
             if (tweetMessage.Length <= 0)
@@ -34,8 +34,8 @@ namespace TwitterUala.Application.UseCases
             tweet.TweetMessage = tweetMessage;
             tweet.TweetPosted = DateTime.UtcNow;
 
-            _unitOfWork.GetRepository<Tweet>().Add(tweet);
-            _unitOfWork.SaveChangesAsync();
+            await _unitOfWork.GetRepository<Tweet>().Add(tweet);
+            await _unitOfWork.SaveChangesAsync();
             _logger.LogInformation("Se publicó el tweet para el usuario: {0}", JsonConvert.SerializeObject(tweet));
         }
     }

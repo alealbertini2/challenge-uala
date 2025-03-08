@@ -5,13 +5,13 @@ using TwitterUala.Domain.Entities;
 
 namespace TwitterUala.Application.UseCases
 {
-    public class TweetsFromFollowingByUserService(IFollowingRepository followingRepository, IUnitOfWork unitOfWork, ILogger<TweetsFromFollowingByUserService> logger) : ITweetsFromFollowingByUserService
+    public class TimelineService(IFollowingRepository followingRepository, IUnitOfWork unitOfWork, ILogger<TimelineService> logger) : ITweetsFromFollowingByUserService
     {
         private readonly IFollowingRepository _followingRepository = followingRepository;
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
-        private readonly ILogger<TweetsFromFollowingByUserService> _logger = logger;
+        private readonly ILogger<TimelineService> _logger = logger;
 
-        public async Task<List<Tweet>> TweetsFromFollowingByUserAsync(long userId)
+        public async Task<List<Tweet>> TimelineByUserIdAsync(long userId)
         {
             var validUser = await _unitOfWork.GetRepository<User>().FirstOrDefaultAsync(u => u.IdUser == userId);
             if (validUser == null)

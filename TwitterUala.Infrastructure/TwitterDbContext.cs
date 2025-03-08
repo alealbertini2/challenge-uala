@@ -15,7 +15,7 @@ namespace TwitterUala.Infrastructure
         public virtual DbSet<Tweet> User { get; set; }
 
 
-        public string ToUnderscoreLowerCase(string str)
+        public static string ToUnderscoreLowerCase(string str)
         {
             return string.Concat(str.Select((x, i) => i > 0 && char.IsUpper(x) ? "_" + x.ToString() : x.ToString())).ToLower();
         }

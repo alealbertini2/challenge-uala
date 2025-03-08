@@ -10,7 +10,6 @@ namespace TwitterUala.Infrastructure.Repositories
 
         public IEnumerable<Tweet> TweetsFromFollowingByUserId(long userId)
         {
-            //var tweetsByUser = _dbContext.Following.Include(f => f.TweetsUser).Where(f => f.UserId == userId);
             var tweetsByUser = from following in _dbContext.Following
                                join tweet in _dbContext.Tweet on following.UsersToFollowId equals tweet.UserId
                                where following.UserId == userId

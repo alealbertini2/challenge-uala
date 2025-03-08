@@ -30,10 +30,10 @@ namespace TwitterUala.Application.UseCases
             }
 
             User user = new User();
-            user.Username = username;
+            user.Username = username.Trim();
 
-            _unitOfWork.GetRepository<User>().Add(user);
-            _unitOfWork.SaveChangesAsync();
+            await _unitOfWork.GetRepository<User>().Add(user);
+            await _unitOfWork.SaveChangesAsync();
             _logger.LogInformation("Usuario insertado: {0}", JsonConvert.SerializeObject(user));
         }
     }
