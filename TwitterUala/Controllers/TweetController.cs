@@ -17,27 +17,15 @@ namespace TwitterUala.Controllers
         [HttpPost(Name = "PublishTweet")]
         public void PublishTweet(long userId, string tweetMessage)
         {
-            try
-            {
-                _publishTweetService.PublishTweetAsync(userId, tweetMessage).GetAwaiter().GetResult();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Error al publicar tweet: {ex.Message}", ex);
-            }
+            _logger.LogInformation("Se publicará el tweet {0} para el usuario: {1}", tweetMessage, userId);
+            _publishTweetService.PublishTweetAsync(userId, tweetMessage);
         }
 
         [HttpGet(Name = "FollowingTweetsByUserId")]
-        public List<Tweet> FollowingTweetsByUserId(long userId)
+        public async Task<List<Tweet>> FollowingTweetsByUserId(long userId)
         {
-            try
-            {
-                return _tweetsFromFollowingByUserService.TweetsFromFollowingByUserAsync(userId).GetAwaiter().GetResult();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Error al obtener tweets del usuario {userId}: {ex.Message}", ex);
-            }
+            _logger.LogInformation("Obtener tweets para el usuario: {0}", userId);
+            return await _tweetsFromFollowingByUserService.TweetsFromFollowingByUserAsync(userId);
         }
     }
 }

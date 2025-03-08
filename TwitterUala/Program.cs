@@ -31,6 +31,7 @@ builder.Services.AddScoped<ITweetsFromFollowingByUserService, TweetsFromFollowin
 builder.Services.AddScoped<ICreateUserService, CreateUserService>();
 builder.Services.AddScoped<IFollowingRepository, FollowingRepository>();
 
+builder.Services.AddExceptionHandler<ExceptionHandler>();
 
 var app = builder.Build();
 using (var sp = app.Services.CreateScope())
@@ -43,6 +44,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseExceptionHandler(_ => { });
 
 app.UseHttpsRedirection();
 

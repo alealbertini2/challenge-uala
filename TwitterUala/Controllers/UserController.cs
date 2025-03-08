@@ -5,21 +5,16 @@ namespace TwitterUala.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class UserController(ICreateUserService createUserService) : Controller
+    public class UserController(ICreateUserService createUserService, ILogger<UserController> logger) : Controller
     {
         private readonly ICreateUserService _createUserService = createUserService;
+        private readonly ILogger<UserController> _logger = logger;
 
         [HttpPost(Name = "User")]
         public void CreateUser(string username)
         {
-            try
-            {
-                _createUserService.CreateUserAsync(username).GetAwaiter().GetResult();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Error al crear el usuario: {ex.Message}", ex);
-            }
+            _logger.LogInformation("Usuario a insertar: {0}", username);
+            _createUserService.CreateUserAsync(username);
         }
     }
 }
