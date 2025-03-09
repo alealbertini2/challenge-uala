@@ -12,7 +12,7 @@ namespace TwitterUala.Infrastructure
 
         public virtual DbSet<Following> Following { get; set; }
         public virtual DbSet<Tweet> Tweet { get; set; }
-        public virtual DbSet<Tweet> User { get; set; }
+        public virtual DbSet<User> User { get; set; }
 
 
         public static string ToUnderscoreLowerCase(string str)

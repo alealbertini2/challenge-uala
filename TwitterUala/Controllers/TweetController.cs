@@ -8,10 +8,10 @@ namespace TwitterUala.Controllers
     [Route("[controller]")]
     public class TweetController(ILogger<TweetController> logger, 
         IPublishTweetService publishTweetService,
-        ITweetsFromFollowingByUserService tweetsFromFollowingByUserService) : ControllerBase
+        ITimelineService tweetsFromFollowingByUserService) : ControllerBase
     {
         private readonly ILogger<TweetController> _logger = logger;
-        private readonly ITweetsFromFollowingByUserService _tweetsFromFollowingByUserService = tweetsFromFollowingByUserService;
+        private readonly ITimelineService _tweetsFromFollowingByUserService = tweetsFromFollowingByUserService;
         private readonly IPublishTweetService _publishTweetService = publishTweetService;
 
         [HttpPost(Name = "PublishTweet")]

@@ -5,7 +5,7 @@ using TwitterUala.Domain.Entities;
 
 namespace TwitterUala.Application.UseCases
 {
-    public class TimelineService(IFollowingRepository followingRepository, IUnitOfWork unitOfWork, ILogger<TimelineService> logger) : ITweetsFromFollowingByUserService
+    public class TimelineService(IFollowingRepository followingRepository, IUnitOfWork unitOfWork, ILogger<TimelineService> logger) : ITimelineService
     {
         private readonly IFollowingRepository _followingRepository = followingRepository;
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
